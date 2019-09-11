@@ -1,3 +1,3 @@
 
-# opensrp-client-child
+# opensrp-client-simprint
 OpenSRP client simprints module library
