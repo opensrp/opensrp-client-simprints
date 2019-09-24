@@ -37,8 +37,8 @@ public class SimPrintsRegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!Utils.isPackageInstalled(SIMPRINTS_PACKAGE_NAME,getPackageManager())){
-            Utils.downloadSimprintIdApk(this);
+        if(!SimPrintsUtils.isPackageInstalled(SIMPRINTS_PACKAGE_NAME,getPackageManager())){
+            SimPrintsUtils.downloadSimprintIdApk(this);
             return;
         }
         moduleId = getIntent().getStringExtra(Constants.SIMPRINTS_MODULE_ID);
@@ -76,7 +76,7 @@ public class SimPrintsRegisterActivity extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 SimPrintsRegistration simprintsRegistration = new SimPrintsRegistration(registration.getGuid());
                 simprintsRegistration.setCheckStatus(check);
-                returnIntent.putExtra(SimPrintsConstant.INTENT_DATA,simprintsRegistration);
+                returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA,simprintsRegistration);
                 setResult(RESULT_OK,returnIntent);
                 finish();
             }else {

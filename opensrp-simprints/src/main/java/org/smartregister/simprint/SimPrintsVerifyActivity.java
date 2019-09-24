@@ -33,8 +33,8 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!Utils.isPackageInstalled(SIMPRINTS_PACKAGE_NAME,getPackageManager())){
-            Utils.downloadSimprintIdApk(this);
+        if(!SimPrintsUtils.isPackageInstalled(SIMPRINTS_PACKAGE_NAME,getPackageManager())){
+            SimPrintsUtils.downloadSimprintIdApk(this);
             return;
         }
         String moduleId = getIntent().getStringExtra(Constants.SIMPRINTS_MODULE_ID);
@@ -70,7 +70,7 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
                 SimPrintsVerification simprintsVerification = new SimPrintsVerification(verification.getGuid());
                 simprintsVerification.setCheckStatus(check);
                 simprintsVerification.setTier(verification.getTier());
-                returnIntent.putExtra(SimPrintsConstant.INTENT_DATA,simprintsVerification);
+                returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA,simprintsVerification);
                 setResult(RESULT_OK,returnIntent);
                 finish();
             }else{

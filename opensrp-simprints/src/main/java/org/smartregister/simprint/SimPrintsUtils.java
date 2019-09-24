@@ -10,7 +10,7 @@ import android.net.Uri;
 
 import static com.simprints.libsimprints.Constants.SIMPRINTS_PACKAGE_NAME;
 
-public class Utils {
+public class SimPrintsUtils {
 
     public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
 
