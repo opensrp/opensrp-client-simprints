@@ -16,7 +16,7 @@ import com.simprints.libsimprints.Registration;
 
 import static com.simprints.libsimprints.Constants.SIMPRINTS_PACKAGE_NAME;
 
-public class SimprintsRegisterActivity extends AppCompatActivity {
+public class SimPrintsRegisterActivity extends AppCompatActivity {
 
     private static final String PUT_EXTRA_REQUEST_CODE =  "result_code";
 
@@ -27,7 +27,7 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
 
 
     public static void startSimprintsRegisterActivity(Activity context, String moduleId, int requestCode){
-        Intent intent = new Intent(context,SimprintsRegisterActivity.class);
+        Intent intent = new Intent(context, SimPrintsRegisterActivity.class);
         intent.putExtra(Constants.SIMPRINTS_MODULE_ID,moduleId);
         intent.putExtra(PUT_EXTRA_REQUEST_CODE,requestCode);
         context.startActivityForResult(intent,requestCode);
@@ -48,8 +48,8 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
     }
     private void startRegister(){
         try{
-            SimprintsHelper simprintsHelper = new SimprintsHelper(SimprintsLibrary.getInstance().getProjectId(),
-                    SimprintsLibrary.getInstance().getUserId());
+            SimPrintsHelper simprintsHelper = new SimPrintsHelper(SimPrintsLibrary.getInstance().getProjectId(),
+                    SimPrintsLibrary.getInstance().getUserId());
             Intent intent = simprintsHelper.enroll(moduleId);
             startActivityForResult(intent,REQUEST_CODE);
         }catch (IllegalStateException e){
@@ -74,9 +74,9 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Intent returnIntent = new Intent();
-                SimprintsRegistration simprintsRegistration = new SimprintsRegistration(registration.getGuid());
+                SimPrintsRegistration simprintsRegistration = new SimPrintsRegistration(registration.getGuid());
                 simprintsRegistration.setCheckStatus(check);
-                returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsRegistration);
+                returnIntent.putExtra(SimPrintsConstant.INTENT_DATA,simprintsRegistration);
                 setResult(RESULT_OK,returnIntent);
                 finish();
             }else {

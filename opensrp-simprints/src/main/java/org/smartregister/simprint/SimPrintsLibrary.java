@@ -2,13 +2,13 @@ package org.smartregister.simprint;
 
 import android.content.Context;
 
-public class SimprintsLibrary {
+public class SimPrintsLibrary {
 
-    private static SimprintsLibrary instance;
+    private static SimPrintsLibrary instance;
     private String projectId;
     private String userId;
     private Context context;
-    private SimprintsLibrary(Context context, String projectId, String userId){
+    private SimPrintsLibrary(Context context, String projectId, String userId){
         this.context = context;
         this.projectId = projectId;
         this.userId = userId;
@@ -17,13 +17,13 @@ public class SimprintsLibrary {
 
     public static void init(Context context,String projectId,String userId){
         if(instance == null){
-            instance = new SimprintsLibrary(context,projectId,userId);
+            instance = new SimPrintsLibrary(context,projectId,userId);
         }
     }
-    public static SimprintsLibrary getInstance() throws IllegalStateException{
+    public static SimPrintsLibrary getInstance() throws IllegalStateException{
         if (instance == null) {
             throw new IllegalStateException(" Instance does not exist!!! Call "
-                    + SimprintsLibrary.class.getName()
+                    + SimPrintsLibrary.class.getName()
                     + ".init method in the onCreate method of "
                     + "your Application class ");
         }
@@ -34,5 +34,9 @@ public class SimprintsLibrary {
     }
     public String getUserId(){
         return userId;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

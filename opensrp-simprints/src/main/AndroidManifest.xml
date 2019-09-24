@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk tools:overrideLibrary="com.simprints.libsimprints"/>
     <application>
-        <activity android:name=".SimprintsRegisterActivity" />
-        <activity android:name=".SimprintsVerifyActivity" />
+        <activity android:name=".SimPrintsRegisterActivity" />
+        <activity android:name=".SimPrintsVerifyActivity" />
     </application>
 </manifest>

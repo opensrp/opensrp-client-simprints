@@ -4,11 +4,11 @@ import android.content.Intent;
 
 import com.simprints.libsimprints.SimHelper;
 
-public class SimprintsHelper {
+public class SimPrintsHelper {
 
     private SimHelper simHelper;
 
-    public SimprintsHelper(String projectId,String userId){
+    public SimPrintsHelper(String projectId, String userId){
         simHelper = new SimHelper(projectId,userId);
     }
     public Intent enroll(String moduleId){

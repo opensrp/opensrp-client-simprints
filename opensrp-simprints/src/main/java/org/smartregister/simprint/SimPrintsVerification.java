@@ -1,12 +1,24 @@
 package org.smartregister.simprint;
 
+import com.simprints.libsimprints.Tier;
+
 import java.io.Serializable;
 
-public class SimprintsRegistration implements Serializable {
+public class SimPrintsVerification implements Serializable {
     private String guid;
     private Boolean checkStatus;
-    public SimprintsRegistration(String guId){
+    private Tier tier;
+    public SimPrintsVerification(String guId){
         this.guid = guId;
+    }
+
+
+    public void setTier(Tier tier) {
+        this.tier = tier;
+    }
+
+    public Tier getTier() {
+        return tier;
     }
 
     public String getGuid() {

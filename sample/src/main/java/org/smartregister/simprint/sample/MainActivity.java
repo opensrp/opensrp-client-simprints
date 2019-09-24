@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 
-import org.smartregister.simprint.SimprintsConstant;
-import org.smartregister.simprint.SimprintsLibrary;
-import org.smartregister.simprint.SimprintsRegisterActivity;
-import org.smartregister.simprint.SimprintsRegistration;
-import org.smartregister.simprint.SimprintsVerifyActivity;
+import org.smartregister.simprint.SimPrintsConstant;
+import org.smartregister.simprint.SimPrintsLibrary;
+import org.smartregister.simprint.SimPrintsRegisterActivity;
+import org.smartregister.simprint.SimPrintsRegistration;
+import org.smartregister.simprint.SimPrintsVerifyActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,19 +23,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SimprintsLibrary.init(MainActivity.this,"tZqJnw0ajK04LMYdZzyw","test_user");
+        SimPrintsLibrary.init(MainActivity.this,"tZqJnw0ajK04LMYdZzyw","test_user");
 
         findViewById(R.id.capture_finger_print_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimprintsRegisterActivity.startSimprintsRegisterActivity(MainActivity.this,"mpower",REQUEST_CODE_REGISTER);
+                SimPrintsRegisterActivity.startSimprintsRegisterActivity(MainActivity.this,"mpower",REQUEST_CODE_REGISTER);
 
             }
         });
         findViewById(R.id.verify_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimprintsVerifyActivity.startSimprintsVerifyActivity(MainActivity.this,"mpower","12312312312",REQUEST_CODE_VERIFY);
+                SimPrintsVerifyActivity.startSimprintsVerifyActivity(MainActivity.this,"mpower","12312312312",REQUEST_CODE_VERIFY);
 
             }
         });
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data !=null){
 
-            SimprintsRegistration simprintsRegistration =(SimprintsRegistration) data.getSerializableExtra(SimprintsConstant.INTENT_DATA);
+            SimPrintsRegistration simprintsRegistration =(SimPrintsRegistration) data.getSerializableExtra(SimPrintsConstant.INTENT_DATA);
 
             switch (requestCode){
                 case  REQUEST_CODE_REGISTER:

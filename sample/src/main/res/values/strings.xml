@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">simprint-sample</string>
+    <string name="register_finger_print">Register finger print</string>
+    <string name="verify_finger_print">Verify finger print</string>
 </resources>

@@ -13,7 +13,7 @@ import com.simprints.libsimprints.Verification;
 
 import static com.simprints.libsimprints.Constants.SIMPRINTS_PACKAGE_NAME;
 
-public class SimprintsVerifyActivity extends AppCompatActivity {
+public class SimPrintsVerifyActivity extends AppCompatActivity {
 
     public static final String PUT_EXTRA_REQUEST_CODE =  "result_code";
 
@@ -22,7 +22,7 @@ public class SimprintsVerifyActivity extends AppCompatActivity {
 
 
     public static void startSimprintsVerifyActivity(Activity context, String moduleId, String guId, int requestCode){
-        Intent intent = new Intent(context, SimprintsVerifyActivity.class);
+        Intent intent = new Intent(context, SimPrintsVerifyActivity.class);
         intent.putExtra(Constants.SIMPRINTS_MODULE_ID,moduleId);
         intent.putExtra(Constants.SIMPRINTS_VERIFY_GUID,guId);
         intent.putExtra(PUT_EXTRA_REQUEST_CODE,requestCode);
@@ -41,8 +41,8 @@ public class SimprintsVerifyActivity extends AppCompatActivity {
         String guId = getIntent().getStringExtra(Constants.SIMPRINTS_VERIFY_GUID);
         REQUEST_CODE = getIntent().getIntExtra(PUT_EXTRA_REQUEST_CODE,111);
         try{
-            SimprintsHelper simprintsHelper = new SimprintsHelper(SimprintsLibrary.getInstance().getProjectId(),
-                    SimprintsLibrary.getInstance().getUserId());
+            SimPrintsHelper simprintsHelper = new SimPrintsHelper(SimPrintsLibrary.getInstance().getProjectId(),
+                    SimPrintsLibrary.getInstance().getUserId());
             Intent intent = simprintsHelper.verify(moduleId, guId);
             startActivityForResult(intent,REQUEST_CODE);
         }catch (IllegalStateException e){
@@ -67,10 +67,10 @@ public class SimprintsVerifyActivity extends AppCompatActivity {
                     return;
                 }
                 Intent returnIntent = new Intent();
-                SimprintsVerification simprintsVerification = new SimprintsVerification(verification.getGuid());
+                SimPrintsVerification simprintsVerification = new SimPrintsVerification(verification.getGuid());
                 simprintsVerification.setCheckStatus(check);
                 simprintsVerification.setTier(verification.getTier());
-                returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsVerification);
+                returnIntent.putExtra(SimPrintsConstant.INTENT_DATA,simprintsVerification);
                 setResult(RESULT_OK,returnIntent);
                 finish();
             }else{
