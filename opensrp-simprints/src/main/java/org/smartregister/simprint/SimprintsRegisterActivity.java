@@ -1,12 +1,14 @@
 package org.smartregister.simprint;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
@@ -17,7 +19,6 @@ import static com.simprints.libsimprints.Constants.SIMPRINTS_PACKAGE_NAME;
 public class SimprintsRegisterActivity extends AppCompatActivity {
 
     private static final String PUT_EXTRA_REQUEST_CODE =  "result_code";
-    private static final String TAG = "SimprintsRegister";
 
 
     private int REQUEST_CODE;
@@ -42,6 +43,10 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
         }
         moduleId = getIntent().getStringExtra(Constants.SIMPRINTS_MODULE_ID);
         REQUEST_CODE = getIntent().getIntExtra(PUT_EXTRA_REQUEST_CODE,111);
+        startRegister();
+
+    }
+    private void startRegister(){
         try{
             SimprintsHelper simprintsHelper = new SimprintsHelper(SimprintsLibrary.getInstance().getProjectId(),
                     SimprintsLibrary.getInstance().getUserId());
@@ -51,7 +56,6 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
             finish();
         }
-
     }
 
     @Override
@@ -59,16 +63,61 @@ public class SimprintsRegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if( data!=null && resultCode == RESULT_OK && requestCode == REQUEST_CODE){
             Registration registration = data.getParcelableExtra(Constants.SIMPRINTS_REGISTRATION);
+            Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
 
-            String uniqueId = registration.getGuid();
-            Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,true);
-            Intent returnIntent = new Intent();
-            SimprintsRegistration simprintsRegistration = new SimprintsRegistration(uniqueId);
-            simprintsRegistration.setCheckStatus(check);
-            returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsRegistration);
-            setResult(RESULT_OK,returnIntent);
-            finish();
+            if(check){
+                if(TextUtils.isEmpty(registration.getGuid())){
+                    Toast.makeText(this,getString(R.string.guid_not_found),Toast.LENGTH_SHORT).show();
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_CANCELED,returnIntent);
+                    finish();
+                    return;
+                }
+                Intent returnIntent = new Intent();
+                SimprintsRegistration simprintsRegistration = new SimprintsRegistration(registration.getGuid());
+                simprintsRegistration.setCheckStatus(check);
+                returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsRegistration);
+                setResult(RESULT_OK,returnIntent);
+                finish();
+            }else {
+                showFingerPrintFail(this, new OnDialogButtonClick() {
+                    @Override
+                    public void onOkButtonClick() {
+                        startRegister();
+                    }
+
+                    @Override
+                    public void onCancelButtonClick() {
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_CANCELED,returnIntent);
+                        finish();
+                    }
+                });
+            }
+
+
 
         }
     }
+    private void showFingerPrintFail(Context context, final OnDialogButtonClick onDialogButtonClick){
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setMessage(getString(R.string.fail_result));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.scan_again), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onDialogButtonClick.onOkButtonClick();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onDialogButtonClick.onCancelButtonClick();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+
 }

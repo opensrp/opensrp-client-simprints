@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
@@ -55,19 +56,30 @@ public class SimprintsVerifyActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if( data!=null && resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+            Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
+            if(check){
+                Verification verification = data.getParcelableExtra(Constants.SIMPRINTS_VERIFICATION);
+                if(TextUtils.isEmpty(verification.getGuid())){
+                    Toast.makeText(this,getString(R.string.guid_not_found),Toast.LENGTH_SHORT).show();
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_CANCELED,returnIntent);
+                    finish();
+                    return;
+                }
+                Intent returnIntent = new Intent();
+                SimprintsVerification simprintsVerification = new SimprintsVerification(verification.getGuid());
+                simprintsVerification.setCheckStatus(check);
+                simprintsVerification.setTier(verification.getTier());
+                returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsVerification);
+                setResult(RESULT_OK,returnIntent);
+                finish();
+            }else{
+                Intent returnIntent = new Intent();
+                setResult(RESULT_CANCELED,returnIntent);
+                finish();
+            }
 
-            Verification verification = data.getParcelableExtra(Constants.SIMPRINTS_VERIFICATION);
-            verification.getGuid();
-            verification.getConfidence();
-            verification.getTier();
-            Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,true);
-            Intent returnIntent = new Intent();
-            SimprintsVerification simprintsVerification = new SimprintsVerification(verification.getGuid());
-            simprintsVerification.setCheckStatus(check);
-            simprintsVerification.setTier(verification.getTier());
-            returnIntent.putExtra(SimprintsConstant.INTENT_DATA,simprintsVerification);
-            setResult(RESULT_OK,returnIntent);
-            finish();
+
 
         }
     }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">opensrp_simprint</string>
+    <string name="guid_not_found">GUID not found</string>
+    <string name="fail_result">Fail to get result</string>
+    <string name="scan_again">Scan again</string>
+    <string name="cancel">Cancel</string>
 </resources>
