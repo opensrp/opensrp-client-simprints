@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-import org.smartregister.simprint.SimPrintsConstant;
+import org.smartregister.simprint.SimPrintsConstantHelper;
 import org.smartregister.simprint.SimPrintsLibrary;
 import org.smartregister.simprint.SimPrintsRegisterActivity;
 import org.smartregister.simprint.SimPrintsRegistration;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data !=null){
 
-            SimPrintsRegistration simprintsRegistration =(SimPrintsRegistration) data.getSerializableExtra(SimPrintsConstant.INTENT_DATA);
+            SimPrintsRegistration simprintsRegistration =(SimPrintsRegistration) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
 
             switch (requestCode){
                 case  REQUEST_CODE_REGISTER:
