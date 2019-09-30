@@ -66,8 +66,7 @@ public class SimPrintsRegisterActivity extends AppCompatActivity {
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
 
             if(check){
-                if(TextUtils.isEmpty(registration.getGuid())){
-                    Toast.makeText(this,getString(R.string.guid_not_found),Toast.LENGTH_SHORT).show();
+                if(registration == null || TextUtils.isEmpty(registration.getGuid())){
                     Intent returnIntent = new Intent();
                     setResult(RESULT_CANCELED,returnIntent);
                     finish();
