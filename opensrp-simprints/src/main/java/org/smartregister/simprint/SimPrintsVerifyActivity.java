@@ -59,8 +59,7 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
             if(check){
                 Verification verification = data.getParcelableExtra(Constants.SIMPRINTS_VERIFICATION);
-                if(TextUtils.isEmpty(verification.getGuid())){
-                    Toast.makeText(this,getString(R.string.guid_not_found),Toast.LENGTH_SHORT).show();
+                if(verification == null || TextUtils.isEmpty(verification.getGuid())){
                     Intent returnIntent = new Intent();
                     setResult(RESULT_CANCELED,returnIntent);
                     finish();
