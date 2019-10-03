@@ -58,17 +58,18 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
         if( data!=null && resultCode == RESULT_OK && requestCode == REQUEST_CODE){
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
             if(check){
+                SimPrintsVerification simprintsVerification;
                 Verification verification = data.getParcelableExtra(Constants.SIMPRINTS_VERIFICATION);
                 if(verification == null || TextUtils.isEmpty(verification.getGuid())){
-                    Intent returnIntent = new Intent();
-                    setResult(RESULT_CANCELED,returnIntent);
-                    finish();
-                    return;
+                    simprintsVerification = new SimPrintsVerification(null);
+                    simprintsVerification.setCheckStatus(false);
+                    simprintsVerification.setTier(null);
+                }else{
+                    simprintsVerification = new SimPrintsVerification(verification.getGuid());
+                    simprintsVerification.setCheckStatus(true);
+                    simprintsVerification.setTier(verification.getTier());
                 }
                 Intent returnIntent = new Intent();
-                SimPrintsVerification simprintsVerification = new SimPrintsVerification(verification.getGuid());
-                simprintsVerification.setCheckStatus(check);
-                simprintsVerification.setTier(verification.getTier());
                 returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA,simprintsVerification);
                 setResult(RESULT_OK,returnIntent);
                 finish();
