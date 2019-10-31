@@ -19,4 +19,8 @@ public class SimPrintsHelper {
         return simHelper.verify(moduleId,verifyId);
     }
 
+    public Intent identify(String moduleId){
+        return simHelper.identify(moduleId);
+    }
+
 }
