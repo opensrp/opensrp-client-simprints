@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
 import com.simprints.libsimprints.Identification;
+import com.simprints.libsimprints.Tier;
+
+import java.util.ArrayList;
 
 import static com.simprints.libsimprints.Constants.SIMPRINTS_PACKAGE_NAME;
 
@@ -64,22 +67,28 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data != null && resultCode == RESULT_OK && requestCode == REQUEST_CODE){
-            Identification identification =
-                    data.getParcelableExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
+
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK, false);
+            ArrayList<Identification> identifications = data
+                    .getParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
+
+            ArrayList<Identification> bestMatchedIdentifications = getBestMatchIdentification(identifications);
 
             if (check){
-                SimPrintsIdentification simPrintsIdentification;
-                if (identification == null && TextUtils.isEmpty(identification.getGuid())){
-                    simPrintsIdentification = new SimPrintsIdentification(null);
-                    simPrintsIdentification.setCheck(false);
+                ArrayList<SimPrintsIdentification> simPrintsIdentifications;
+
+                if ( bestMatchedIdentifications.size() == 0 ){
+                    simPrintsIdentifications = new ArrayList<>();
                 }else {
-                    simPrintsIdentification = new SimPrintsIdentification(identification.getGuid());
-                    simPrintsIdentification.setCheck(true);
+                    simPrintsIdentifications = new ArrayList<>();
+                    for (Identification identification : bestMatchedIdentifications){
+                        SimPrintsIdentification simPrintsIdentification = new SimPrintsIdentification(identification.getGuid());
+                        simPrintsIdentifications.add(simPrintsIdentification);
+                    }
                 }
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA, simPrintsIdentification);
+                returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA, simPrintsIdentifications);
                 setResult(RESULT_OK,returnIntent);
                 finish();
 
@@ -99,6 +108,19 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    private ArrayList<Identification> getBestMatchIdentification(ArrayList<Identification> identifications){
+        ArrayList<Identification> ids = new ArrayList<>();
+
+        for (Identification identification : identifications){
+            if (identification.getTier() == Tier.TIER_1 ||
+                identification.getTier() == Tier.TIER_2){
+                ids.add(identification);
+            }
+        }
+
+        return ids;
     }
 
     private void showFingerPrintFail(Context context, final OnDialogButtonClick onDialogButtonClick){
