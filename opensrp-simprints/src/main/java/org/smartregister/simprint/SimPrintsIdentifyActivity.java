@@ -72,9 +72,9 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
             ArrayList<Identification> identifications = data
                     .getParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
 
-            ArrayList<Identification> bestMatchedIdentifications = getBestMatchIdentification(identifications);
-
             if (check){
+
+                ArrayList<Identification> bestMatchedIdentifications = getBestMatchIdentification(identifications);
                 ArrayList<SimPrintsIdentification> simPrintsIdentifications;
 
                 if ( bestMatchedIdentifications.size() == 0 ){
