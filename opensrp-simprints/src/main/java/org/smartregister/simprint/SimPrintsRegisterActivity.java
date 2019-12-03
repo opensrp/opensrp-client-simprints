@@ -66,15 +66,15 @@ public class SimPrintsRegisterActivity extends AppCompatActivity {
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK,false);
 
             if(check){
+                SimPrintsRegistration simprintsRegistration;
                 if(registration == null || TextUtils.isEmpty(registration.getGuid())){
-                    Intent returnIntent = new Intent();
-                    setResult(RESULT_CANCELED,returnIntent);
-                    finish();
-                    return;
+                    simprintsRegistration = new SimPrintsRegistration(null);
+                    simprintsRegistration.setCheckStatus(false);
+                }else{
+                    simprintsRegistration = new SimPrintsRegistration(registration.getGuid());
+                    simprintsRegistration.setCheckStatus(true);
                 }
                 Intent returnIntent = new Intent();
-                SimPrintsRegistration simprintsRegistration = new SimPrintsRegistration(registration.getGuid());
-                simprintsRegistration.setCheckStatus(check);
                 returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA,simprintsRegistration);
                 setResult(RESULT_OK,returnIntent);
                 finish();
@@ -93,8 +93,6 @@ public class SimPrintsRegisterActivity extends AppCompatActivity {
                     }
                 });
             }
-
-
 
         }
     }

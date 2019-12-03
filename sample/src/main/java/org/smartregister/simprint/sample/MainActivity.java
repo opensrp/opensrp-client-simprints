@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SimPrintsLibrary.init(MainActivity.this,"tZqJnw0ajK04LMYdZzyw","test_user");
+//        SimPrintsLibrary.init(MainActivity.this,"tZqJnw0ajK04LMYdZzyw","test_user");
+        SimPrintsLibrary.init(MainActivity.this,"fUBnpzDdbsCsMp0egCHB","global_module");
 
         findViewById(R.id.capture_finger_print_btn).setOnClickListener(new View.OnClickListener() {
             @Override
