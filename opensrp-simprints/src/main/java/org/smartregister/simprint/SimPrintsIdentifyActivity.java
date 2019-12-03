@@ -8,12 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
 import com.simprints.libsimprints.Identification;
-import com.simprints.libsimprints.Tier;
 
 import java.util.ArrayList;
 
@@ -70,57 +68,38 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
 
             Boolean check = data.getBooleanExtra(Constants.SIMPRINTS_BIOMETRICS_COMPLETE_CHECK, false);
             ArrayList<Identification> identifications = data
-                    .getParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
+                .getParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
+
+            ArrayList<SimPrintsIdentification> simPrintsIdentifications = new ArrayList<>();
 
             if (check && identifications != null && identifications.size() > 0){
 
-                ArrayList<Identification> bestMatchedIdentifications = getBestMatchIdentification(identifications);
-                ArrayList<SimPrintsIdentification> simPrintsIdentifications;
+                for (Identification identification : identifications){
+                    SimPrintsIdentification simPrintsIdentification = new SimPrintsIdentification(identification.getGuid());
+                    simPrintsIdentifications.add(simPrintsIdentification);
+                }
+            }
 
-                if ( bestMatchedIdentifications.size() == 0 ){
-                    simPrintsIdentifications = new ArrayList<>();
-                }else {
-                    simPrintsIdentifications = new ArrayList<>();
-                    for (Identification identification : bestMatchedIdentifications){
-                        SimPrintsIdentification simPrintsIdentification = new SimPrintsIdentification(identification.getGuid());
-                        simPrintsIdentifications.add(simPrintsIdentification);
-                    }
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA, simPrintsIdentifications);
+            setResult(RESULT_OK,returnIntent);
+            finish();
+
+        }else {
+            showFingerPrintFail(this, new OnDialogButtonClick() {
+                @Override
+                public void onOkButtonClick() {
+                    startIdentification();
                 }
 
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA, simPrintsIdentifications);
-                setResult(RESULT_OK,returnIntent);
-                finish();
-
-            }else {
-                showFingerPrintFail(this, new OnDialogButtonClick() {
-                    @Override
-                    public void onOkButtonClick() {
-                        startIdentification();
-                    }
-
-                    @Override
-                    public void onCancelButtonClick() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_CANCELED,returnIntent);
-                        finish();
-                    }
-                });
-            }
+                @Override
+                public void onCancelButtonClick() {
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_CANCELED,returnIntent);
+                    finish();
+                }
+            });
         }
-    }
-
-    private ArrayList<Identification> getBestMatchIdentification(ArrayList<Identification> identifications){
-        ArrayList<Identification> ids = new ArrayList<>();
-
-        for (Identification identification : identifications){
-            if (identification.getTier() == Tier.TIER_1 ||
-                identification.getTier() == Tier.TIER_2){
-                ids.add(identification);
-            }
-        }
-
-        return ids;
     }
 
     private void showFingerPrintFail(Context context, final OnDialogButtonClick onDialogButtonClick){
