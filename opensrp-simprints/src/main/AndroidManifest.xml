@@ -6,5 +6,7 @@
     <application>
         <activity android:name=".SimPrintsRegisterActivity" />
         <activity android:name=".SimPrintsVerifyActivity" />
+        <activity android:name=".SimPrintsIdentifyActivity" />
+
     </application>
 </manifest>

@@ -1,5 +1,6 @@
 package org.smartregister.simprint;
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.simprints.libsimprints.SimHelper;
@@ -17,6 +18,14 @@ public class SimPrintsHelper {
 
     public Intent verify(String moduleId, String verifyId){
         return simHelper.verify(moduleId,verifyId);
+    }
+
+    public Intent identify(String moduleId){
+        return simHelper.identify(moduleId);
+    }
+
+    public void confirmIdentity(Context context, String sessionId, String selectedGuid){
+        simHelper.confirmIdentity(context, sessionId, selectedGuid);
     }
 
 }
