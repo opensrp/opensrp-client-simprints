@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        SimPrintsLibrary.init(MainActivity.this,"tZqJnw0ajK04LMYdZzyw","test_user");
+
         SimPrintsLibrary.init(MainActivity.this, BuildConfig.SIMPRINTS_PROJECT_ID,"global_module");
 
         findViewById(R.id.capture_finger_print_btn).setOnClickListener(new View.OnClickListener() {
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView)findViewById(R.id.text_status)).setText("GUID:"+simprintsRegistration.getGuid()+":status:"+simprintsRegistration.getCheckStatus());
                     break;
                 case REQUEST_CODE_VERIFY:
-                    simprintsRegistration = (SimPrintsRegistration) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
-                    ((TextView)findViewById(R.id.text_status)).setText("verification status:"+simprintsRegistration.getCheckStatus());
+                    SimPrintsRegistration verifyResults = (SimPrintsRegistration) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
+                    ((TextView)findViewById(R.id.text_status)).setText("verification status:"+verifyResults.getCheckStatus());
                     break;
                 case REQUEST_CODE_IDENTIFY:
                     ArrayList<SimPrintsIdentification> identifications = (ArrayList<SimPrintsIdentification>) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
