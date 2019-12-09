@@ -47,4 +47,11 @@ public class SimPrintsUtils {
         alertDialog.show();
 
     }
+
+    public static void confirmIdentity(Context context, String sessionId, String selectedGuid){
+        SimPrintsHelper simPrintsHelper = new SimPrintsHelper(SimPrintsLibrary.getInstance().getProjectId(),
+                SimPrintsLibrary.getInstance().getUserId());
+        simPrintsHelper.confirmIdentity(context, sessionId, selectedGuid);
+    }
+
 }
