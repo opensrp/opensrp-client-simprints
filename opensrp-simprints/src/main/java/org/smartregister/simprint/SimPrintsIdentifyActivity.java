@@ -76,6 +76,8 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
 
                 for (Identification identification : identifications){
                     SimPrintsIdentification simPrintsIdentification = new SimPrintsIdentification(identification.getGuid());
+                    simPrintsIdentification.setTier(identification.getTier());
+                    simPrintsIdentification.setConfidence(identification.getConfidence());
                     simPrintsIdentifications.add(simPrintsIdentification);
                 }
             }
