@@ -71,6 +71,7 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
                 .getParcelableArrayListExtra(Constants.SIMPRINTS_IDENTIFICATIONS);
 
             ArrayList<SimPrintsIdentification> simPrintsIdentifications = new ArrayList<>();
+            String sessionId = data.getStringExtra(Constants.SIMPRINTS_SESSION_ID);
 
             if (check && identifications != null && identifications.size() > 0){
 
@@ -84,6 +85,8 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
 
             Intent returnIntent = new Intent();
             returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA, simPrintsIdentifications);
+//            returnIntent.putExtra(SimPrintsConstantHelper.SIMPRINTS_INTENT_DATA,data);
+            returnIntent.putExtra(Constants.SIMPRINTS_SESSION_ID,sessionId);
             setResult(RESULT_OK,returnIntent);
             finish();
 
