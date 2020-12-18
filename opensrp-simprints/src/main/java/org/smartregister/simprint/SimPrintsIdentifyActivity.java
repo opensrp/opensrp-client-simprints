@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
@@ -26,10 +27,18 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
 
     private int REQUEST_CODE;
     private String moduleId;
+    private String userId;
 
     public static void startSimprintsIdentifyActivity(Activity context, String moduleId, int requestCode){
         Intent intent = new Intent(context, SimPrintsIdentifyActivity.class);
         intent.putExtra(Constants.SIMPRINTS_MODULE_ID, moduleId);
+        intent.putExtra(PUT_EXTRA_REQUEST_CODE, requestCode);
+        context.startActivityForResult(intent, requestCode);
+    }
+    public static void startSimprintsIdentifyActivity(Activity context, String moduleId, String userId, int requestCode){
+        Intent intent = new Intent(context, SimPrintsIdentifyActivity.class);
+        intent.putExtra(Constants.SIMPRINTS_MODULE_ID, moduleId);
+        intent.putExtra(Constants.SIMPRINTS_USER_ID, userId);
         intent.putExtra(PUT_EXTRA_REQUEST_CODE, requestCode);
         context.startActivityForResult(intent, requestCode);
     }
@@ -42,6 +51,7 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
             return;
         }
         moduleId = getIntent().getStringExtra(Constants.SIMPRINTS_MODULE_ID);
+        userId = getIntent().getStringExtra(Constants.SIMPRINTS_USER_ID);
         REQUEST_CODE = getIntent().getIntExtra(PUT_EXTRA_REQUEST_CODE, 111);
 
         startIdentification();
@@ -50,8 +60,11 @@ public class SimPrintsIdentifyActivity extends AppCompatActivity {
 
     private void startIdentification(){
         try{
+            if(TextUtils.isEmpty(userId)){
+                userId = SimPrintsLibrary.getInstance().getUserId();
+            }
             SimPrintsHelper simPrintsHelper = new SimPrintsHelper(SimPrintsLibrary.getInstance().getProjectId(),
-                    SimPrintsLibrary.getInstance().getUserId());
+                    userId);
             Intent intent = simPrintsHelper.identify(moduleId);
             startActivityForResult(intent, REQUEST_CODE);
         }catch (Exception e){
