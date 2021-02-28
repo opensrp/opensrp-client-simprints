@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.simprints.libsimprints.Constants;
@@ -44,7 +43,6 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
         try{
             SimPrintsHelper simprintsHelper = new SimPrintsHelper(SimPrintsLibrary.getInstance().getProjectId(),
                     SimPrintsLibrary.getInstance().getUserId());
-            Log.v("SIMPRINTS_IDENTITY","simprints user:"+SimPrintsLibrary.getInstance().getUserId());
             Intent intent = simprintsHelper.verify(moduleId, guId);
             startActivityForResult(intent,REQUEST_CODE);
         }catch (IllegalStateException e){
