@@ -8,10 +8,19 @@ public class SimPrintsVerification implements Serializable {
     private String guid;
     private Boolean checkStatus;
     private Tier tier;
+    private float confidence;
+
     public SimPrintsVerification(String guId){
         this.guid = guId;
     }
 
+    public void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    public float getConfidence() {
+        return confidence;
+    }
 
     public void setTier(Tier tier) {
         this.tier = tier;

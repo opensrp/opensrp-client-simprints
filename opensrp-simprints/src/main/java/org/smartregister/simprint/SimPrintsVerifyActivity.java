@@ -68,6 +68,7 @@ public class SimPrintsVerifyActivity extends AppCompatActivity {
                     simprintsVerification = new SimPrintsVerification(verification.getGuid());
                     simprintsVerification.setCheckStatus(true);
                     simprintsVerification.setTier(verification.getTier());
+                    simprintsVerification.setConfidence(verification.getConfidence());
                 }
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra(SimPrintsConstantHelper.INTENT_DATA,simprintsVerification);
