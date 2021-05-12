@@ -27,6 +27,6 @@ jobs:
       - name: Generate Javadoc with Gradle
         run: ./gradlew javadoc
       - name: Upload coverage to Coveralls with Gradle
-        run: ./gradlew opensrp-simprints:coveralls --stacktrace --service=github-actions
+        run: ./gradlew opensrp-simprints:coveralls --stacktrace
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
