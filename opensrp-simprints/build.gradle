@@ -3,7 +3,6 @@ description = 'OpenSRP simprint client library'
 buildscript {
     repositories {
         google()
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'

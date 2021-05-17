@@ -3,12 +3,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven{  url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
-        classpath ('com.android.tools.build:gradle:3.5.3')
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'gradle.plugin.org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.10.2'
     }
 }
@@ -20,7 +20,6 @@ configure(allprojects) { project ->
     buildscript {
         repositories {
             google()
-            jcenter()
             mavenCentral()
             maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
             mavenLocal()
@@ -45,7 +44,6 @@ subprojects {
 
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "http://acra.googlecode.com/svn/repository/releases" }
@@ -58,7 +56,7 @@ subprojects {
     // Improve build server performance by allowing disabling of pre-dexing
     // (see http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance.)
     project.plugins.whenPluginAdded { plugin ->
-        if("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
@@ -66,8 +64,8 @@ subprojects {
     }
 }
 
-apply plugin : 'java'
-apply plugin : 'build-dashboard'
+apply plugin: 'java'
+apply plugin: 'build-dashboard'
 apply plugin: 'io.codearte.nexus-staging'
 
 buildDashboard {
