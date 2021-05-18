@@ -3,6 +3,7 @@ description = 'OpenSRP simprint client library'
 buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
@@ -78,7 +79,7 @@ allprojects {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.simprints:libsimprints:2020.2.0'
+    implementation 'com.simprints:libsimprints:2021.1.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:3.1.0'
