@@ -89,7 +89,7 @@ After press any button add below code for registration
             return;
         }
    ```
-   From onActivityResult we'll catch the result callback from simprints ID as below. You'll need to check the **simprintsRegistration.getCheckStatus()** before access other option. If this return true you'll get the GUID with others parameter.
+   From onActivityResult we'll catch the result callback from simprints ID as below. We'll need to check the **simprintsRegistration.getCheckStatus()** before access other option. If this return true we'll get the GUID with others parameter.
    
    ```
     @Override
@@ -110,4 +110,110 @@ After press any button add below code for registration
     }
     
    ```
+  ## Verification
+  This verification process involves matching previously enrolled biometric data with the present beneficiary's biometric.Calling app creates a Verify Intent using projectID, moduleID, userID and beneficiary's uniqueID(GUID)
+  ```
+  findViewById(R.id.verify_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimPrintsVerifyActivity.startSimprintsVerifyActivity(MainActivity.this,"module_id","gu_id",REQUEST_CODE_VERIFY);
+
+            }
+        });
+  ```
+  At onActivityResult we can get the result from simprints IDs.
+  
+  ``` @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && data !=null){
+
+            switch (requestCode){
+                
+                case REQUEST_CODE_VERIFY:
+                    SimPrintsVerification verifyResults = (SimPrintsVerification) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
+                    ((TextView)findViewById(R.id.text_status)).setText("verification status:"+verifyResults.getCheckStatus());
+                    break;
+              
+
+            }
+        }
+    }
+  ```
+We'll need to check the **simprintsRegistration.getCheckStatus()** before access other option.
+Handling Verification Response
+
+During the verification process, the present beneficiary's biometric is captured and the verifyGuid, that is passed in the Intent, is used to retrieve previously enroled beneficiary's biometric, and the two biometric templates are tested for a match.
+
+If this verification process completes successfully, a verification result containing the following properties is returned:
+
+
+   1. Tier - the ranking tier for the biometric record **verifyResults.getTier**
+
+   2. Confidence - the percentage to which the record matches the captured biometric **verifyResults.getConfidence**
+
+   3. Guid - the unique id for the biometric record **verifyResults.getGuid**
+
+
+Note:  The confidence and tier values can then be used to determine the ranking and accuracy for the matched biometric record, to get more info on this
+
+  ## Identification/Search by finger print
+  
+  You will need to identify this beneficiary by capturing the biometrics and running it through the system, for potential matches. The beneficiary would then be selected from this list of potential matches. This is the Identification process.
+  
+   ```
+    findViewById(R.id.identify_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SimPrintsIdentifyActivity.startSimprintsIdentifyActivity(MainActivity.this, "module_id", REQUEST_CODE_IDENTIFY);
+            }
+        });
+   ```
+   We'll get the list identification result from the callback
    
+    ```
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && data !=null){
+
+            switch (requestCode){
+                
+                case REQUEST_CODE_IDENTIFY:
+                    ArrayList<SimPrintsIdentification> identifications = (ArrayList<SimPrintsIdentification>) data.getSerializableExtra(SimPrintsConstantHelper.INTENT_DATA);
+                    StringBuilder identificationsResults = new StringBuilder();
+                    for (SimPrintsIdentification identification : identifications){
+                        identificationsResults.append(identification.getGuid());
+                        identificationsResults.append("\n");
+                    }
+                    ((TextView)findViewById(R.id.text_status)).setText("Identification Results:"+identificationsResults);
+                    break;
+
+            }
+        }
+    }
+    ```
+  This generated ranked list contains **SimPrintsIdentification identification** records with each having the following properties:
+
+  1.  Tier - the ranking tier for the biometric record **identification.getTier**
+
+  2.  Confidence Score - the percentage to which the record matches the captured biometric **identification.getConfidence**
+
+  3.  Guid - the unique id for the biometric record **identification.getGuid**
+  4.  Session id - data.getStringExtra(Constants.SIMPRINTS_SESSION_ID);
+  
+  ## Identification Callout - (Confirm Identity)
+  
+  After getting identity result and if it's match with any beneficiary then application need to send the identification callout for simprints as like below
+   
+ ```
+   SimPrintsHelper simPrintsHelper = new SimPrintsHelper(project_id, user_id);
+        Intent intent;
+        if (TextUtils.isEmpty(simPrintsGuid)) {
+            intent = simPrintsHelper.confirmIdentity(context, sessiodId, "none_selected");
+
+        } else {
+            intent = simPrintsHelper.confirmIdentity(context, sessiodId, simPrintsGuid);
+        }
+        startActivityForResult(intent, REQUEST_CODE);
+ ```
